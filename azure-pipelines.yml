@@ -32,3 +32,25 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: DownloadBuildArtifacts@1
+  inputs:
+    buildType: 'current'
+    downloadType: 'single'
+    artifactName: 'drop'
+    downloadPath: '$(System.ArtifactsDirectory)'
+  
+- task: PublishBuildArtifacts@1
+  inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
+
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+      ConnectionType: 'AzureRM'
+      azureSubscription: 'Azure Pass - Sponsorship(11d6a09e-6914-4b31-8629-bf61004839b8)'
+      appType: 'webApp'
+      WebAppName: 'tetststststststst'
+      packageForLinux: '$(System.ArtifactsDirectory)/drop/*.zip'
